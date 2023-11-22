@@ -29,16 +29,37 @@ public class Main {
     public static int checarPalavra(String input, String resposta, int[] status) {
         int pontos = 0;
 
+        //statusResposta limita a quantidade de meio certos (amarelo) que podem aparecer em uma palavra
+        //um 1 simboliza que a letra nessa posicao ja foi marcada como meio certo em algum momento
+        //primeiro array se refere ao input e o segundo a resposta
+        //o primeiro array nao pode ter mais meio certos que o segundo
+        int[][] statusResposta = {{0,0,0,0,0}, {0,0,0,0,0}};
+
         for(int tentativaIndex = 0; tentativaIndex < input.length(); tentativaIndex++){
             for(int respostaIndex = 0; respostaIndex < resposta.length(); respostaIndex++){
 
+                //se as letras comparadas sao iguais
                 if(input.charAt(tentativaIndex) == resposta.charAt(respostaIndex)){
-                    if(tentativaIndex == respostaIndex){
-                        pontos += 1;
+
+                    if (statusResposta[1][respostaIndex] == 0){
+                        statusResposta[1][respostaIndex] = 1;
+                    }
+
+                    //se letra está no mesmo lugar e há espaço para mais um certo || meio certo
+                    if(tentativaIndex == respostaIndex && somaArray(statusResposta[1]) > somaArray(statusResposta[0])){
+
+                        pontos += 2;
                         status[tentativaIndex] = 2;
+                        statusResposta[0][tentativaIndex] = 1;
                         break;
-                    } else {
+
+                        //se letra está no lugar errado e há espaço para mais um certo || meio certo
+                    } else if (somaArray(statusResposta[1]) > somaArray(statusResposta[0])){
+
+                        pontos += 1;
                         status[tentativaIndex] = 1;
+                        statusResposta[0][tentativaIndex] = 1;
+
                     }
                 }
             }
@@ -58,6 +79,28 @@ public class Main {
             }
         }
         System.out.println(NORMAL + " ");
+    }
+
+    //função de somar os elementos de um array usada na função checarPalavra
+    public static int somaArray(int[] array){
+        int resultado = 0;
+        for (int j : array) {
+            resultado += j;
+        }
+        return resultado;
+    }
+
+    //checa se o input é uma palavra de verdade (que consta no array de palavras)
+    public static boolean dicionarioCheck(String input){
+        boolean palavraValida = false;
+
+        for (String palavra : palavras) {
+            if (input.equals(palavra)) {
+                palavraValida = true;
+                break;
+            }
+        }
+        return palavraValida;
     }
 
     public static void main(String[] args) {
@@ -86,9 +129,14 @@ public class Main {
             do {
                 System.out.print("palavra: ");
                 input = scanner.nextLine();
-            } while(input.length() != 5);
+                if (input.length() != 5 || !dicionarioCheck(input)){
+                    System.out.println("palavra inválida!");
+                    System.out.println();
+                }
+            } while(input.length() != 5 || !dicionarioCheck(input));
+
             input = input.toLowerCase();
-            System.out.println(" ");
+            System.out.println();
 
             //limpar array de pontuação
             for(int j = 0; j < 5; j++)
@@ -104,7 +152,7 @@ public class Main {
             printPalavra(input, status);
 
             //terminar jogo se input tem pontuação máxima (todas as letras no lugar certo)
-            if (pontos == 5){
+            if (pontos == 10){
                 venceu = true;
                 break;
             }
