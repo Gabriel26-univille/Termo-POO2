@@ -2,7 +2,6 @@ package termo;
 
 public class WordChecker {
 
-    //função de somar os elementos de um array usada na função checarPalavra
     public int somaArray(int[] array){
         int resultado = 0;
         for (int j : array) {
@@ -11,7 +10,6 @@ public class WordChecker {
         return resultado;
     }
 
-    //função que checa a letra existe na resposta e se está no lugar certo
     public int checarPalavra(String input, String resposta, int[] status) {
         int pontos = 0;
 
@@ -53,7 +51,6 @@ public class WordChecker {
         return pontos;
     }
 
-    //função que faz print da tentativa digitada com a cor certa
     public String printPalavra(String input, int[] status){
         for(int tentativaIndex = 0; tentativaIndex < input.length(); tentativaIndex++) {
             if (status[tentativaIndex] == 2){

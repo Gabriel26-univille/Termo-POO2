@@ -1,7 +1,6 @@
 package termo;
 
 public class Cores {
-    //definir cores
     static final String NORMAL = "\u001B[0m";
     static final String AMARELO = "\u001B[43m";
     static final String VERDE = "\u001B[42m";
