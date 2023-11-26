@@ -12,14 +12,11 @@ public class Main {
         Dicionario dicionario = new Dicionario();
         WordChecker wordChecker = new WordChecker();
 
-        boolean venceu = false;
-
         //array para armazenar pontuação de cada tentativa (0 = não na palavra, 1 = na palavra, 2 = no lugar)
         int[] status = {0,0,0,0,0};
 
         //escolher palavra aleatória da lista para ser a resposta
-        int tamanhoLista = dicionario.palavras.length - 1;
-        String resposta = dicionario.palavras[rng.nextInt(tamanhoLista + 1)];
+        String resposta = dicionario.palavras[rng.nextInt((dicionario.palavras.length - 1) + 1)];
 
         System.out.println(Cores.VERDE + "TERMO" + Cores.NORMAL);
         System.out.println("Voce tem 6 tentativas para adivinhar uma palavra de 5 letras");
@@ -32,14 +29,13 @@ public class Main {
             //pedir input de palavra com 5 letras
             do {
                 System.out.print("palavra: ");
-                input = scanner.nextLine();
+                input = (scanner.nextLine()).toLowerCase();
                 if (input.length() != 5 || !dicionario.dicionarioCheck(input)){
                     System.out.println("palavra inválida!");
                     System.out.println();
                 }
             } while(input.length() != 5 || !dicionario.dicionarioCheck(input));
 
-            input = input.toLowerCase();
             System.out.println();
 
             //limpar array de pontuação
@@ -57,15 +53,11 @@ public class Main {
 
             //terminar jogo se input tem pontuação máxima (todas as letras no lugar certo)
             if (pontos == 10){
-                venceu = true;
+                System.out.println("\n Voce acertou!");
                 break;
+            } else if (i == 5){
+                System.out.println("\n Voce perdeu! A palavra era " + resposta);
             }
-        }
-
-        if (venceu){
-            System.out.println("Voce acertou!");
-        } else {
-            System.out.println("Voce perdeu! A palavra era " + resposta);
         }
     }
 }
